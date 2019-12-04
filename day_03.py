@@ -7,7 +7,7 @@ DIRS = {
 
 def get_inp():
   result = []
-  with open('input/day_3.txt') as f:
+  with open('input/day_03.txt') as f:
     for line in f:
       result.append([(0, 0, 0)])
       for step in line.split(','):

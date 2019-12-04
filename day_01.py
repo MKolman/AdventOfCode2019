@@ -1,5 +1,5 @@
 def get_inp():
-  with open('input/day_1.txt') as f:
+  with open('input/day_01.txt') as f:
     for line in f:
       yield int(line)
 

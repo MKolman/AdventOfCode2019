@@ -1,5 +1,5 @@
 def get_inp():
-  with open('input/day_2.txt') as f:
+  with open('input/day_02.txt') as f:
     arr = list(map(int, f.read().split(',')))
     return {i: n for i, n in enumerate(arr)}
 
