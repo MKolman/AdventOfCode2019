@@ -25,7 +25,7 @@ def easy():
 def hard():
   l1, l2 = get_inp()
   cross = set(l1[1:]) & set(l2[1:])
-  d1, d2 = ({p: i for i, p in enumerate(l)} for l in [l1, l2])
+  d1, d2 = ({p: i for i, p in list(enumerate(l))[::-1]} for l in [l1, l2])
   return min(d1[p] + d2[p] for p in cross)
 
 print(easy())
