@@ -44,5 +44,9 @@ def run(machineid=1):
       idx += 4
   return result
 
-print(run(1))
-print(run(5))
+def test():
+  return run(1) == 13210611, run(5) == 584126
+
+if __name__ == "__main__":
+  print(run(1))
+  print(run(5))

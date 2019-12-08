@@ -28,5 +28,9 @@ def hard():
   d1, d2 = ({p: i for i, p in list(enumerate(l))[::-1]} for l in [l1, l2])
   return min(d1[p] + d2[p] for p in cross)
 
-print(easy())
-print(hard())
+def test():
+  return easy() == 1225, hard() == 107036
+
+if __name__ == "__main__":
+  print(easy())
+  print(hard())

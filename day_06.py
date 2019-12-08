@@ -28,6 +28,9 @@ def hard(is_orbiting, orbiting_me, current='YOU', dest='SAN', prev=None):
       result = max(result, hard(is_orbiting, orbiting_me, planet, dest, current))
   return result + (result != -1)
 
+def test():
+  return easy(get_inp()[1]) == 150150, hard(*get_inp())-2 == 352
 
-print(easy(get_inp()[1]))
-print(hard(*get_inp())-2)
+if __name__ == "__main__":
+  print(easy(get_inp()[1]))
+  print(hard(*get_inp())-2)

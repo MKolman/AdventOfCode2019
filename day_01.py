@@ -18,5 +18,9 @@ def hard():
       inp = inp // 3 - 2
   return result
 
-print(easy())
-print(hard())
+def test():
+  return easy() == 3320226, hard() == 4977473
+
+if __name__ == "__main__":
+  print(easy())
+  print(hard())

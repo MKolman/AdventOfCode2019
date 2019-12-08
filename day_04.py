@@ -27,5 +27,9 @@ def hard():
     cnt += rep and low < int(s) < high
   return cnt
 
-print(easy())
-print(hard())
+def test():
+  return easy() == 2050, hard() == 1390
+
+if __name__ == "__main__":
+  print(easy())
+  print(hard())

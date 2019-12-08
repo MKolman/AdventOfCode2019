@@ -32,5 +32,9 @@ def hard():
     result = max(val, result)
   return result
 
-print(easy())
-print(hard())
+def test():
+  return easy() == 65464, hard() == 1518124
+
+if __name__ == "__main__":
+  print(easy())
+  print(hard())

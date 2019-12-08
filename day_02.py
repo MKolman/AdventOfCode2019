@@ -44,7 +44,11 @@ def hard2():
 def test_hard():
   assert hard() == hard2()
 
-print(easy2())
-print(hard2())
-test_easy()
-test_hard()
+def test():
+  return easy2() == 5110675, hard2() == 4847
+
+if __name__ == "__main__":  
+  print(easy2())
+  print(hard2())
+  test_easy()
+  test_hard()
