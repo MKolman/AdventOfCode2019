@@ -1,16 +1,28 @@
 class Runner(object):
   def __init__(self, state, stdin=None):
-    self.state = state
+    self.state = dict(enumerate(state))
     self.stdin = stdin or []
     self.idx = 0
+    self.relative_base = 0
 
   def get(self, n):
-    get_value = (self.state[self.idx] // 10**(n+1)) % 10
+    mode = (self.state[self.idx] // 10**(n+1)) % 10
+    assert mode in [0, 1, 2], mode
     value = self.state[self.idx + n]
-    return value if get_value else self.state[value]
+    if mode == 0:
+      return self.state[value]
+    elif mode == 1:
+      return value
+    elif mode == 2:
+      return self.state[value + self.relative_base]
 
   def set(self, n, value):
-    self.state[self.state[self.idx+n]] = value
+    mode = (self.state[self.idx] // 10**(n+1)) % 10
+    assert mode in [0, 2], mode
+    if mode == 0:
+      self.state[self.state[self.idx+n]] = value
+    else:
+      self.state[self.state[self.idx+n] + self.relative_base] = value
 
   def __iter__(self):
     return self
@@ -18,7 +30,7 @@ class Runner(object):
   def __next__(self):
     while True:
       op = self.state[self.idx] % 100
-      assert 1 <= op <= 8 or op == 99, 'Command {} is not valid on position {} when parsing {}'.format(op, self.idx, self.state[self.idx])
+      assert 1 <= op <= 9 or op == 99, 'Command {} is not valid on position {} when parsing {}'.format(op, self.idx, self.state[self.idx])
       if op == 1:
         self.set(3, self.get(1) + self.get(2))
         self.idx += 4
@@ -50,5 +62,8 @@ class Runner(object):
       elif op == 8:
         self.set(3, int(self.get(1) == self.get(2)))
         self.idx += 4
+      elif op == 9:
+        self.relative_base += self.get(1)
+        self.idx += 2
       elif op == 99:
         raise StopIteration
