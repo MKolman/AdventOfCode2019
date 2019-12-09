@@ -24,46 +24,61 @@ class Runner(object):
     else:
       self.state[self.state[self.idx+n] + self.relative_base] = value
 
+  def op_sum(self):
+    self.set(3, self.get(1) + self.get(2))
+    self.idx += 4
+
+  def op_mul(self):
+    self.set(3, self.get(1) * self.get(2))
+    self.idx += 4
+
+  def op_inp(self):
+    assert self.stdin, "I ran out of STDIN while reading at {}".format(self.idx)
+    self.set(1, self.stdin[0])
+    self.stdin = self.stdin[1:]
+    self.idx += 2
+
+  def op_prn(self):
+    result = self.get(1)
+    self.idx += 2
+    return result
+
+  def op_jit(self):
+    if self.get(1) != 0:
+      self.idx = self.get(2)
+    else:
+      self.idx += 3
+
+  def op_jif(self):
+    if self.get(1) == 0:
+      self.idx = self.get(2)
+    else:
+      self.idx += 3
+
+  def op_les(self):
+    self.set(3, int(self.get(1) < self.get(2)))
+    self.idx += 4
+
+  def op_eql(self):
+    self.set(3, int(self.get(1) == self.get(2)))
+    self.idx += 4
+
+  def op_chb(self):
+    self.relative_base += self.get(1)
+    self.idx += 2
+
+  def op_hlt(self):
+    raise StopIteration
+
   def __iter__(self):
     return self
 
   def __next__(self):
+    ops = [self.op_sum, self.op_mul, self.op_inp, self.op_prn, self.op_jit, self.op_jif, self.op_les, self.op_eql, self.op_chb]
     while True:
       op = self.state[self.idx] % 100
       assert 1 <= op <= 9 or op == 99, 'Command {} is not valid on position {} when parsing {}'.format(op, self.idx, self.state[self.idx])
-      if op == 1:
-        self.set(3, self.get(1) + self.get(2))
-        self.idx += 4
-      elif op == 2:
-        self.set(3, self.get(1) * self.get(2))
-        self.idx += 4
-      elif op == 3:
-        assert self.stdin, "I ran out of STDIN while reading at {}".format(self.idx)
-        self.set(1, self.stdin[0])
-        self.stdin = self.stdin[1:]
-        self.idx += 2
-      elif op == 4:
-        result = self.get(1)
-        self.idx += 2
-        return result
-      elif op == 5:
-        if self.get(1) != 0:
-          self.idx = self.get(2)
-        else:
-          self.idx += 3
-      elif op == 6:
-        if self.get(1) == 0:
-          self.idx = self.get(2)
-        else:
-          self.idx += 3
-      elif op == 7:
-        self.set(3, int(self.get(1) < self.get(2)))
-        self.idx += 4
-      elif op == 8:
-        self.set(3, int(self.get(1) == self.get(2)))
-        self.idx += 4
-      elif op == 9:
-        self.relative_base += self.get(1)
-        self.idx += 2
-      elif op == 99:
-        raise StopIteration
+      f = self.op_hlt if op == 99 else ops[op-1]
+      if op == 4:
+        return f()
+      f()
