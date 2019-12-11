@@ -18,16 +18,23 @@ def hard(debug=False):
     for j, (p, d) in enumerate(zip(img, data[i:i+n])):
       if p == 2:
         img[j] = d
-  if debug:
-    for i in range(0, n, 25):
-      for j in range(0, 25):
-        print(' # '[img[i+j]], end='')
-      print()
-  return 'GJYEA'
+  result = '\n'
+  for i in range(0, n, 25):
+    for j in range(0, 25):
+      result += ' # '[img[i+j]]
+    result += '\n'
+  return result
 
 def test():
-  return easy() == 1742, hard() == 'GJYEA'
+  return easy() == 1742, hard() == '''
+ ##    ## #   #####  ##  
+#  #    # #   ##    #  # 
+#       #  # # ###  #  # 
+# ##    #   #  #    #### 
+#  # #  #   #  #    #  # 
+ ###  ##    #  #### #  # 
+'''
 
 if __name__ == "__main__":
   print(easy())
-  print(hard())
+  print(hard(), 'GJYEA')

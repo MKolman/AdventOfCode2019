@@ -42,17 +42,24 @@ def hard(debug=False):
     fac %= 4
     pos = move(pos, fac)
     prog.stdin.append(colors[pos])
-  if debug:
-    xs, ys = zip(*list(colors))
-    for y in range(min(ys), max(ys)+1):
-      for x in range(min(xs), max(xs)+1):
-        print(' #'[colors[(x, y)]], end='')
-      print()
-  return 'APFKRKBR'
+  result = '\n'
+  xs, ys = zip(*list(colors))
+  for y in range(min(ys), max(ys)+1):
+    for x in range(min(xs), max(xs)+1):
+      result += ' #'[colors[(x, y)]]
+    result += '\n'
+  return result
 
 def test():
-  return easy() == 2018, hard() == 'APFKRKBR'
+  return easy() == 2018, hard() == '''
+  ##  ###  #### #  # ###  #  # ###  ###    
+ #  # #  # #    # #  #  # # #  #  # #  #   
+ #  # #  # ###  ##   #  # ##   ###  #  #   
+ #### ###  #    # #  ###  # #  #  # ###    
+ #  # #    #    # #  # #  # #  #  # # #    
+ #  # #    #    #  # #  # #  # ###  #  #   
+'''
 
 if __name__ == '__main__':
   print(easy())
-  print(hard(True))
+  print(hard(), 'APFKRKBR')
