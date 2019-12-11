@@ -1,6 +1,7 @@
+from collections import defaultdict
 class Runner(object):
   def __init__(self, state, stdin=None):
-    self.state = dict(enumerate(state))
+    self.state = defaultdict(int, enumerate(state))
     self.stdin = stdin or []
     self.idx = 0
     self.relative_base = 0
