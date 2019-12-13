@@ -25,50 +25,50 @@ class Runner(object):
     else:
       self.state[self.state[self.idx+n] + self.relative_base] = value
 
-  def op_sum(self):
+  def op_sum(self):  # CMD 1
     self.set(3, self.get(1) + self.get(2))
     self.idx += 4
 
-  def op_mul(self):
+  def op_mul(self):  # CMD 2
     self.set(3, self.get(1) * self.get(2))
     self.idx += 4
 
-  def op_inp(self):
+  def op_inp(self):  # CMD 3
     assert self.stdin, "I ran out of STDIN while reading at {}".format(self.idx)
     self.set(1, self.stdin[0])
     self.stdin = self.stdin[1:]
     self.idx += 2
 
-  def op_prn(self):
+  def op_prn(self):  # CMD 4
     result = self.get(1)
     self.idx += 2
     return result
 
-  def op_jit(self):
+  def op_jit(self):  # CMD 5
     if self.get(1) != 0:
       self.idx = self.get(2)
     else:
       self.idx += 3
 
-  def op_jif(self):
+  def op_jif(self):  # CMD 6
     if self.get(1) == 0:
       self.idx = self.get(2)
     else:
       self.idx += 3
 
-  def op_les(self):
+  def op_les(self):  # CMD 7
     self.set(3, int(self.get(1) < self.get(2)))
     self.idx += 4
 
-  def op_eql(self):
+  def op_eql(self):  # CMD 8
     self.set(3, int(self.get(1) == self.get(2)))
     self.idx += 4
 
-  def op_chb(self):
+  def op_chb(self):  # CMD 9
     self.relative_base += self.get(1)
     self.idx += 2
 
-  def op_hlt(self):
+  def op_hlt(self):  # CMD 99
     raise StopIteration
 
   def __iter__(self):
@@ -79,6 +79,8 @@ class Runner(object):
     while True:
       op = self.state[self.idx] % 100
       assert 1 <= op <= 9 or op == 99, 'Command {} is not valid on position {} when parsing {}'.format(op, self.idx, self.state[self.idx])
+      if op == 3 and len(self.stdin) == 0:
+        return None
       f = self.op_hlt if op == 99 else ops[op-1]
       if op == 4:
         return f()
