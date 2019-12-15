@@ -1,10 +1,16 @@
 from collections import defaultdict
 class Runner(object):
   def __init__(self, state, stdin=None):
-    self.state = defaultdict(int, enumerate(state))
-    self.stdin = stdin or []
-    self.idx = 0
-    self.relative_base = 0
+    if isinstance(state, Runner):
+      self.state = defaultdict(int, state.state.items())
+      self.stdin = state.stdin[:]
+      self.idx = state.idx
+      self.relative_base = state.relative_base
+    else:
+      self.state = defaultdict(int, enumerate(state))
+      self.stdin = stdin or []
+      self.idx = 0
+      self.relative_base = 0
 
   def get(self, n):
     mode = (self.state[self.idx] // 10**(n+1)) % 10
